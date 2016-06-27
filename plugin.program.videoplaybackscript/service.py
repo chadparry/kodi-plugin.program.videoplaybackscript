@@ -10,24 +10,21 @@ import xbmcaddon
 class ListeningPlayer(xbmc.Player):
 
     def __init__(self):
-        xbmc.Player.__init__(self)
+        super(ListeningPlayer, self).__init__()
         self.isVideo = None
         self.isVideoGuard = threading.Lock()
-        self.startScriptEnabled = xbmcaddon.Addon().getSetting('startScriptEnabled')
-        self.startScriptPath = xbmcaddon.Addon().getSetting('startScriptPath')
-        self.startScriptArgs = xbmcaddon.Addon().getSetting('startScriptArgs')
-        self.stopScriptEnabled = xbmcaddon.Addon().getSetting('stopScriptEnabled')
-        self.stopScriptPath = xbmcaddon.Addon().getSetting('stopScriptPath')
-        self.stopScriptArgs = xbmcaddon.Addon().getSetting('stopScriptArgs')
+        self.addon = xbmcaddon.Addon()
 
     def onPlayBackStarted(self):
         isVideo = self.isPlayingVideo()
+        startScriptPath = self.addon.getSetting('startScriptPath')
         with self.isVideoGuard:
             self.isVideo = isVideo
         if (isVideo and
-                self.startScriptEnabled and
-                os.path.isfile(self.startScriptPath)):
-            startScriptCmd = [self.startScriptPath] + shlex.split(self.startScriptArgs)
+                self.addon.getSetting('startScriptEnabled') and
+                os.path.isfile(startScriptPath)):
+            startScriptCmd = ([startScriptPath] +
+                    shlex.split(self.addon.getSetting('startScriptArgs')))
             xbmc.log(
                     'Video starting triggered script: ' +
                             ' '.join(pipes.quote(arg) for arg in startScriptCmd),
@@ -41,10 +38,12 @@ class ListeningPlayer(xbmc.Player):
         with self.isVideoGuard:
             wasVideo = self.isVideo
             self.isVideo = None
+        stopScriptPath = self.addon.getSetting('stopScriptPath')
         if (wasVideo and
-                self.stopScriptEnabled and
-                os.path.isfile(self.stopScriptPath)):
-            stopScriptCmd = [self.stopScriptPath] + shlex.split(self.stopScriptArgs)
+                self.addon.getSetting('stopScriptEnabled') and
+                os.path.isfile(stopScriptPath)):
+            stopScriptCmd = ([stopScriptPath] +
+                    shlex.split(self.addon.getSetting('stopScriptArgs')))
             xbmc.log(
                     'Video stopping triggered script: ' +
                             ' '.join(pipes.quote(arg) for arg in stopScriptCmd),
