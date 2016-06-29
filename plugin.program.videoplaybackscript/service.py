@@ -23,12 +23,12 @@ class ListeningPlayer(xbmc.Player):
         if (isVideo and
                 self.addon.getSetting('startScriptEnabled') and
                 os.path.isfile(startScriptPath)):
-            startScriptCmd = ([startScriptPath] +
-                    shlex.split(self.addon.getSetting('startScriptArgs')))
+            startScriptCmd = ([startScriptPath] + shlex.split(
+                self.addon.getSetting('startScriptArgs')))
             xbmc.log(
-                    'Video starting triggered script: ' +
-                            ' '.join(pipes.quote(arg) for arg in startScriptCmd),
-                    xbmc.LOGINFO)
+                'Video starting triggered script: ' +
+                ' '.join(pipes.quote(arg) for arg in startScriptCmd),
+                xbmc.LOGINFO)
             try:
                 subprocess.check_call(startScriptCmd)
             except subprocess.CalledProcessError as e:
@@ -42,12 +42,12 @@ class ListeningPlayer(xbmc.Player):
         if (wasVideo and
                 self.addon.getSetting('stopScriptEnabled') and
                 os.path.isfile(stopScriptPath)):
-            stopScriptCmd = ([stopScriptPath] +
-                    shlex.split(self.addon.getSetting('stopScriptArgs')))
+            stopScriptCmd = ([stopScriptPath] + shlex.split(
+                self.addon.getSetting('stopScriptArgs')))
             xbmc.log(
-                    'Video stopping triggered script: ' +
-                            ' '.join(pipes.quote(arg) for arg in stopScriptCmd),
-                    xbmc.LOGINFO)
+                'Video stopping triggered script: ' +
+                ' '.join(pipes.quote(arg) for arg in stopScriptCmd),
+                xbmc.LOGINFO)
             try:
                 subprocess.check_call(stopScriptCmd)
             except subprocess.CalledProcessError as e:
