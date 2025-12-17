@@ -1,5 +1,4 @@
 import os
-import pipes
 import shlex
 import subprocess
 import threading
@@ -27,7 +26,7 @@ class ListeningPlayer(xbmc.Player):
                 self.addon.getSetting('startScriptArgs')))
             xbmc.log(
                 'Video starting triggered script: ' +
-                ' '.join(pipes.quote(arg) for arg in startScriptCmd),
+                ' '.join(shlex.quote(arg) for arg in startScriptCmd),
                 xbmc.LOGINFO)
             try:
                 subprocess.check_call(startScriptCmd)
@@ -46,7 +45,7 @@ class ListeningPlayer(xbmc.Player):
                 self.addon.getSetting('stopScriptArgs')))
             xbmc.log(
                 'Video stopping triggered script: ' +
-                ' '.join(pipes.quote(arg) for arg in stopScriptCmd),
+                ' '.join(shlex.quote(arg) for arg in stopScriptCmd),
                 xbmc.LOGINFO)
             try:
                 subprocess.check_call(stopScriptCmd)
