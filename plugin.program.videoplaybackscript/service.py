@@ -14,7 +14,7 @@ class ListeningPlayer(xbmc.Player):
         self.isVideoGuard = threading.Lock()
         self.addon = xbmcaddon.Addon()
 
-    def onPlayBackStarted(self):
+    def onAVStarted(self):
         isVideo = self.isPlayingVideo()
         startScriptPath = self.addon.getSetting('startScriptPath')
         with self.isVideoGuard:
